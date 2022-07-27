@@ -4,6 +4,7 @@
 import os
 import sys
 import shutil
+from tabnanny import verbose
 import cocos
 import re
 
@@ -64,6 +65,19 @@ def get_msbuild_path(vs_version):
 
     return msbuild_path
 
+def _search_devenv_path(vs_version):
+    version_map_swap = {v: k for k, v in VS_VERSION_MAP.items()}
+    version = version_map_swap[vs_version]
+
+    "ok, find dev path by iterator folders"
+    for d in range(ord('A'), ord('Z') + 1):
+        # C:\Program Files (x86)\Microsoft Visual Studio\2019\Community
+        # TODO: need check prefessional too!
+        root = os.path.join(chr(d) + ":\\", "Program Files (x86)", 'Microsoft Visual Studio', str(version), 'Community')
+        if os.path.exists(root):
+            return root
+    return None
+
 def get_devenv_path(vs_version):
     if cocos.os_is_win32():
         import _winreg
@@ -105,10 +119,13 @@ def get_devenv_path(vs_version):
         # find specified VS
         try:
             key = _winreg.OpenKey(vs, r"SxS\VS7")
+            # look's you can't find in reg anymore.
             devenv_path, type = _winreg.QueryValueEx(key, vs_ver)
         except:
             pass
 
+        # C:\Program Files (x86)\Microsoft Visual Studio\2019\Community
+        # 想拿到这个地址
         if devenv_path is not None:
             devenv_path = os.path.join(devenv_path, "Common7", "IDE", "devenv.com")
             if os.path.exists(devenv_path):
@@ -116,6 +133,9 @@ def get_devenv_path(vs_version):
             else:
                 devenv_path = None
 
+    # ok, find in other where.
+    if devenv_path is None:
+        devenv_path = _search_devenv_path(vs_version)
     return devenv_path
 
 def get_vs_versions():

@@ -27,6 +27,7 @@ import gettext
 import json
 import utils
 import re
+import traceback
 
 
 # FIXME: MultiLanguage should be deprecated in favor of gettext
@@ -180,6 +181,7 @@ class CMDRunner(object):
         else:
             log_path = CCPlugin._log_path()
             command += ' >"%s" 2>&1' % log_path
+        print("--------------- CMDRunner called with command:\n" + command + "\n-------------")
         sys.stdout.flush()
         ret = subprocess.call(command, shell=True, cwd=cwd)
         if ret != 0:
@@ -960,6 +962,7 @@ def run_plugin(command, argv, plugins):
     else:
         dependencies = plugin.depends_on()
         dependencies_objects = {}
+        print("command: ", command, ", dependencies: ", dependencies)
         if dependencies is not None:
             for dep_name in dependencies:
                 # FIXME check there's not circular dependencies

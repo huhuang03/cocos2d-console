@@ -147,6 +147,8 @@
         "COMPILE_ARG_GROUP_WIN" : "Windows Options",
         "COMPILE_ARG_VS" : "Specify the Visual Studio version will be used. Such as: 2015. Default find available version automatically.",
         "COMPILE_VS_VERSION" : "Can not find VS version or not specified",
+        "COMPILE_VS_NOT_SPECIFY": "Not specified VS version",
+        "COMPILE_VS_NOT_FOUND": "VS with version '%s' is not found",
         "COMPILE_VS_VERSION_NOT_REGISTER" : "VS version '%s' is not registered in CMAKE_VS_GENERATOR_MAP",
         "COMPILE_ARG_GROUP_WEB" : "Web Options",
         "COMPILE_ARG_SOURCE_MAP" : "Enable source-map",

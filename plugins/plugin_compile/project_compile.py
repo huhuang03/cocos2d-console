@@ -180,8 +180,10 @@ class CCPluginCompile(cocos.CCPlugin):
         self._web_advanced = args.advanced
         self._no_res = args.no_res
 
+        print("args: ", args)
         if args.output_dir is None:
             self._output_dir = self._get_output_dir()
+            #?? 'C:\\Users\\huhua\\source\\hello-cocos\\simulator\\win32'
         else:
             if os.path.isabs(args.output_dir):
                 self._output_dir = args.output_dir
@@ -919,7 +921,10 @@ class CCPluginCompile(cocos.CCPlugin):
                         cocos.Logging.warning(MultiLanguage.get_string("COMPILE_VS_VERSION_NOT_REGISTER") % (ret[2]))
                         self._run_cmd('cmake %s' % os.path.relpath(cmakefile_dir, build_dir) )
                 else:
-                    cocos.Logging.warning(MultiLanguage.get_string("COMPILE_VS_VERSION"))
+                    if self.vs_version:
+                        cocos.Logging.warning(MultiLanguage.get_string("COMPILE_VS_NOT_FOUND") % str(self.vs_version))
+                    else:
+                        cocos.Logging.warning(MultiLanguage.get_string("COMPILE_VS_NOT_SPECIFY"))
                     self._run_cmd('cmake %s' % os.path.relpath(cmakefile_dir, build_dir) )
             else:
                 self._run_cmd('cmake %s' % os.path.relpath(cmakefile_dir, build_dir) )
